@@ -11,7 +11,33 @@ namespace BankAccount
     /// </summary>
     public class Account
     {
-        public string AccountNumber { get; set; }
+        private string _accountNumber;
+
+        public string AccountNumber
+        {
+            get
+            {
+                return _accountNumber;
+            }
+            set
+            {
+                if (value == null) // could do null coalescing operator to simplify. look like --> ??
+                {
+                    throw new ArgumentNullException($"{nameof(AccountNumber)}  cannot be null");
+                }
+
+                if (value.Contains("#"))
+                {
+                    throw new ArgumentException($"{nameof(AccountNumber)} cannot contain hash # symbol");
+                }
+
+                _accountNumber = value;
+
+            }
+        }
+
+
+
         public string Owner { get; set; }
         public double Balance { get; private set; }
 
@@ -24,6 +50,8 @@ namespace BankAccount
         {
             if (amt < 0)
                 throw new ArgumentException($"{nameof(amt)} Cannot be negative.");
+
+
 
             Balance += amt;
             return Balance;
